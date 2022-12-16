@@ -6,11 +6,29 @@ let offset = 0
 
 
 
+function pokeCardInteraction(pokemonId){
+    for (let i = 1; i <= maxRecords; i++) {
+
+        const pokemonCardInt = document.getElementById(i)
+
+        pokemonCardInt.addEventListener('click', () => {
+
+            const pokemonCardContent = document.getElementById('pokemonCardContent')
+            pokemonCardContent.classList.toggle('active')           
+
+        })
+    } 
+
+}
+
+
+
+
 function loadPokemonItens(offset, limit){   //Add Pokemon Lists HTML dynamically
 
         pokeApi.getPokemons(offset, limit).then((pokemons = []) => {   
         const newHtml = pokemons.map((pokemon) => `
-            <li class="pokemon ${pokemon.type}">
+            <li id="${pokemon.number}" class="pokemon ${pokemon.type}">
                 <span class="number">#${pokemon.number}</span>
                 <span class="name">${pokemon.name}</span>
 
@@ -21,16 +39,21 @@ function loadPokemonItens(offset, limit){   //Add Pokemon Lists HTML dynamically
     
                 <img src="${pokemon.photo}" alt="${pokemon.name}">
             </article>
-    
+            
             </li>
     
         `).join('')
         pokemonList.innerHTML += newHtml
-    
-    })
-}
 
+        pokeCardInteraction()
+
+    })
+
+}
 loadPokemonItens(offset, limit)
+
+
+
 
 loadMore.addEventListener('click', () => {
     offset += limit
@@ -43,8 +66,7 @@ loadMore.addEventListener('click', () => {
     }
     else{
         loadPokemonItens(offset, limit)
-    }
-
-    
+    }  
 })
+
 
